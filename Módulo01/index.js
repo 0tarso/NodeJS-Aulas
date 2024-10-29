@@ -24,7 +24,7 @@ server.get('/curso', (req, res) => {
 
 
 
-//Route paramss = parâmetro passado para a rota
+//Route paramsss = parâmetro passado para a rota
 //Ex: /curso/a2b21
 // server.get('/curso/:id', (req, res) => {
 
