@@ -1,0 +1,11 @@
+{
+  "name": "modulo01",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "scripts": {
+    "watch": "node --watch index.js"
+  }
+}
