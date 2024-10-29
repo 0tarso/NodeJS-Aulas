@@ -38,19 +38,50 @@ server.get('/curso', (req, res) => {
 
 
 
+//Montando um CRUD ---------------->>
+// Create, Read, Update, Delete
 
-//Request Body = parâmetro passado no corpo da req
-//Ex: Body = {nome: 'John', idade: '29'}
 const cursos = ['NodeJS', 'Javascript', 'React', 'CSS']
 
-//Montando um CRUD
+//Middleware Global --->>> Qualquer requisição irá passar por ele
+server.use((req, res, next) => {
+    console.log("--------------------------------")
+    console.log("Requisição ao server")
+    console.log(`URL chamada: ${req.url}`)
 
+    //next() para prosseguir com a requisição
+    return next()
+})
+
+//Middleware para checar se o parâmetro "name" foi passado corretamente
+const checkCurso = (req, res, next) => {
+    console.log("Checando nome do curso")
+
+    if (!req.body.name) {
+        return res.status(400).json({ error: "Nome do curso é obrigatório" })
+    }
+
+    return next();
+}
+
+//Middleware para checar se o parâmetro "index" foi passado corretamente
+const checkIndexCurso = (req, res, next) => {
+    const curso = cursos[req.params.index];
+    console.log("Checando index do curso")
+    if (!curso) {
+        return res.status(400).json({ error: "O curso não existe" })
+    }
+
+    return next()
+}
+
+//Métodos do CRUD
 //Read
 server.get('/cursos', (req, res) => {
     return res.json(cursos)
 })
 
-server.get('/cursos/:index', (req, res) => {
+server.get('/cursos/:index', checkIndexCurso, (req, res) => {
     const { index } = req.params;
     const curso = cursos[index]
 
@@ -61,7 +92,8 @@ server.get('/cursos/:index', (req, res) => {
 
 
 //Create
-server.post('/cursos', (req, res) => {
+//usando middleware para checagem do parâmetro passado
+server.post('/cursos', checkCurso, (req, res) => {
     const { name } = req.body
 
     cursos.push(name)
@@ -71,7 +103,7 @@ server.post('/cursos', (req, res) => {
 
 
 //Update
-server.put('/cursos/:index', (req, res) => {
+server.put('/cursos/:index', checkIndexCurso, checkCurso, (req, res) => {
     const { index } = req.params
     const { name } = req.body
 
