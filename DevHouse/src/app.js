@@ -5,12 +5,13 @@ import routes from './routes.js'
 
 
 import { fileURLToPath } from 'url'
-import { dirname, join, resolve } from 'path'
+import { dirname, join } from 'path'
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-dotenv.config();
+//variável que contem a chave para conectar ao banco
 const dbConnect = process.env.MONGO_CONNECT
 
 class App {
