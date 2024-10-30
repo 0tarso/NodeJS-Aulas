@@ -10,6 +10,7 @@ const dbConnect = `mongodb+srv://tailisonramos427:${dbPass}@devhouse.ph1ih.mongo
 
 class App {
 
+    //constructor que ao chamar App, inicia o servidor
     constructor() {
         this.server = express()
 
@@ -21,6 +22,8 @@ class App {
         this.middlewares()
         this.routes()
     }
+
+    //tudo o que passar por .use será executado em cada requisição
 
     middlewares() {
         this.server.use(express.json())
