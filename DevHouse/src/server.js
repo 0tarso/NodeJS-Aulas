@@ -1,3 +1,7 @@
 import app from "./app.js";
 
-app.listen(3030)
+const PORT = 3030
+
+app.listen(PORT, () => {
+    console.log(`Servidor Rodando na porta ${PORT}`)
+})
