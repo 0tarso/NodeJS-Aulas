@@ -12,6 +12,17 @@ const HouseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
+}, {
+    toJSON: {
+        virtuals: true
+    }
+});
+
+
+//cria um dado virtual
+//ou seja, somente retorna quando requisitado, mas não existe na tabela em si
+HouseSchema.virtual('thumbnail_url').get(function () {
+    return `http://localhost:3030/files/${this.thumbnail}`
 })
 
 

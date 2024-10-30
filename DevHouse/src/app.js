@@ -1,12 +1,17 @@
 import dotenv from 'dotenv'
-
 import express from 'express'
 import mongoose from 'mongoose'
 import routes from './routes.js'
 
+
+import { fileURLToPath } from 'url'
+import { dirname, join, resolve } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 dotenv.config();
-const dbPass = process.env.MONGO_PASS
-const dbConnect = `mongodb+srv://tailisonramos427:${dbPass}@devhouse.ph1ih.mongodb.net/?retryWrites=true&w=majority&appName=DevHouse`
+const dbConnect = process.env.MONGO_CONNECT
 
 class App {
 
@@ -24,8 +29,12 @@ class App {
     }
 
     //tudo o que passar por .use será executado em cada requisição
-
     middlewares() {
+        this.server.use(
+            '/files',
+            express.static(join(__dirname, '..', 'uploads'))
+        )
+
         this.server.use(express.json())
     }
 

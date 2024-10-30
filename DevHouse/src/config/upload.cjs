@@ -1,3 +1,8 @@
+//ext do arquivo mudada para .cjs
+//assim usamos commonJS nas importações e exportações
+//facilitando o uso do path
+
+
 const multer = require('multer')
 const path = require('path')
 

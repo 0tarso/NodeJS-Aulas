@@ -12,11 +12,10 @@ const upload = multer(uploadConfig)
 
 routes.post('/sessions', SessionController.store)
 
-//middleware de upload
+
 //mandamos somente um arquivo 'single'
 //e o nome do campo que está sendo enviado pelo model
 routes.post('/houses', upload.single('thumbnail'), HouseController.store)
-
 
 
 
