@@ -1,12 +1,23 @@
 import { Router } from 'express'
+import multer from 'multer'
+import uploadConfig from './config/upload.cjs'
 
 import SessionController from './controllers/SessionController.js'
-
+import HouseController from './controllers/HouseController.js'
 
 const routes = new Router()
+const upload = multer(uploadConfig)
+
 
 
 routes.post('/sessions', SessionController.store)
+
+//middleware de upload
+//mandamos somente um arquivo 'single'
+//e o nome do campo que está sendo enviado pelo model
+routes.post('/houses', upload.single('thumbnail'), HouseController.store)
+
+
 
 
 export default routes
