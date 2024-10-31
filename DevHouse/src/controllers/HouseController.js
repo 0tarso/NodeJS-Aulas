@@ -68,19 +68,29 @@ class HouseController {
 
     async destroy(req, res) {
 
+        //pegamos o id da casa enviada no body da requisição
         const { house_id } = req.body;
+
+        //id do usuário logado enviado no header da requisição
         const { user_id } = req.headers;
 
+        //procuramos o usuário pelo seu id no banco
         const user = await User.findById(user_id);
+
+        //procuramos por uma casa no banco de dados com o id passado
         let houses = await House.findById(house_id)
 
+        //verificamos se o id do usuário encontrado é diferente do cadastrado na casa passada
         if (String(user._id) !== String(houses.user)) {
             return res.status(401).json({ error: "NNão autorizado." })
         }
 
+        //procuramos e deletamos a casa pela sua propriedade _id
+        //que deve ser a mesma pasada pela requisição
         await House.findByIdAndDelete({
             _id: house_id
         })
+
 
         return res.json({
             message: "Excluida com sucesso!"
