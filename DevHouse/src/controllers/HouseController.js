@@ -1,5 +1,6 @@
 import House from "../models/House.js"
 import User from '../models/User.js'
+import * as Yup from 'yup'
 
 class HouseController {
 
@@ -16,6 +17,12 @@ class HouseController {
     }
 
     async store(req, res) {
+        const schema = Yup.object().shape({
+            description: Yup.string().required(),
+            price: Yup.number().required(),
+            location: Yup.string().required(),
+            status: Yup.boolean().required()
+        })
 
         //pegamos do arquivo enviado na requisição
         const { filename } = req.file;
@@ -26,6 +33,12 @@ class HouseController {
         //pegamos do header da requisição
         const { user_id } = req.headers;
 
+
+        //se algo falhar no schema ele retorna false
+        //retornamos um erro
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ error: "Falha na validação. " })
+        }
 
         //criamos a nova casa no banco de dados
         const house = await House.create({
@@ -43,11 +56,25 @@ class HouseController {
 
     async update(req, res) {
 
+        //schema de validação com o Yup
+        const schema = Yup.object().shape({
+            description: Yup.string().required(),
+            price: Yup.number().required(),
+            location: Yup.string().required(),
+            status: Yup.boolean().required()
+        })
+
         const { filename } = req.file;
         const { house_id } = req.params;
 
         const { description, price, location, status } = req.body;
         const { user_id } = req.headers;
+
+        //se algo falhar no schema ele retorna false
+        //retornamos um erro
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ error: "Falha na validação. " })
+        }
 
         const user = await User.findById(user_id);
         let houses = await House.findById(house_id)
