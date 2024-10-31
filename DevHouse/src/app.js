@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose'
+import cors from 'cors'
 import routes from './routes.js'
 
 
@@ -31,16 +32,17 @@ class App {
 
     //tudo o que passar por .use será executado em cada requisição
     middlewares() {
+        this.server.use(cors());
         this.server.use(
             '/files',
             express.static(join(__dirname, '..', 'uploads'))
-        )
+        );
 
-        this.server.use(express.json())
+        this.server.use(express.json());
     }
 
     routes() {
-        this.server.use(routes)
+        this.server.use(routes);
     }
 }
 

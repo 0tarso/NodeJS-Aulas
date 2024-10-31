@@ -5,11 +5,13 @@ class HouseController {
 
     async index(req, res) {
 
+        //pegamos o status passado como parâmetro na requisição
         const { status } = req.query;
 
+        //buscamos casas com o status
         const houses = await House.find({ status })
 
-
+        //retornamos as casas encontradas
         return res.json(houses)
     }
 
