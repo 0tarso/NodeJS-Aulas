@@ -4,6 +4,17 @@ import House from "../models/House.js";
 
 class ReserveController {
 
+    async index(req, res) {
+
+        //pegamos o id do usuário do header da req
+        const { user_id } = req.headers;
+
+        //buscamos em Reserve todas as reservas que contenham o id do usuário
+        const reserves = await Reserve.find({ user: user_id }).populate('house')
+
+        return res.json({ reserves })
+    }
+
     async store(req, res) {
 
         //pegamos o id do usuário passado no header da req
@@ -49,7 +60,7 @@ class ReserveController {
 
 
         //buscamos a reserva criada pelo seu auto id
-        //'populamos' ele com dados de house e dados de user
+        //'populamos' ele com dados de house e dados de user passador no model de Reserve
         //retornmos ele
         Reserve.findById({ _id: reserve._id })
             .populate("house")
@@ -62,6 +73,20 @@ class ReserveController {
                 return res.status(500).json({ error: err.message })
             })
 
+    }
+
+    async destroy(req, res) {
+
+        //pegamos o id da reserva mandado no body da req
+        const { reserve_id } = req.body;
+
+
+        //buscamos e deletamos a reserva pelo id no banco
+        await Reserve.findByIdAndDelete({ _id: reserve_id });
+
+
+        //retornamos uma msg
+        return res.json({ message: "Reserva deletada" })
     }
 
 }
